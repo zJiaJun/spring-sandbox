@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: graphql-dgs
+dgs:
+  graphql:
+    path: /graphql
+    schema-locations:
+      - classpath*:schema/**/*.graphql*
+      - classpath*:schema/**/*.graphql*
+
+    extensions:
+      scalars:
+        enabled: true
