@@ -20,3 +20,8 @@ type Author {
     id: String!
     name: String!
 }
+
+input PostQuery {
+    id: String
+    title: String
+}

@@ -3,15 +3,13 @@ package com.github.zjiajun.spring.sandbox.graphql.dgs.service;
 import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Author;
 import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Comment;
 import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Post;
+import com.github.zjiajun.spring.sandbox.graphql.dgs.types.PostQuery;
 import graphql.com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -63,9 +61,17 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("Argument postId is wrong"));
     }
 
-    public List<Post> getAllPosts(String title) {
+    public List<Post> getAllPosts(Optional<String> title) {
         return posts.stream()
-                .filter(p -> (title == null || "".equals(title)) || p.getTitle().contains(title))
+                .filter(p -> !title.isPresent() || p.getTitle().contains(title.get()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Post> getPostByListArg(List<PostQuery> postQueries) {
+        List<String> postQueryIds = postQueries.stream().map(PostQuery::getId).collect(Collectors.toList());
+        List<String> postQueryTitles = postQueries.stream().map(PostQuery::getTitle).collect(Collectors.toList());
+        return posts.stream()
+                .filter(p -> postQueryIds.contains(p.getId()) || postQueryTitles.contains(p.getTitle()))
                 .collect(Collectors.toList());
     }
 

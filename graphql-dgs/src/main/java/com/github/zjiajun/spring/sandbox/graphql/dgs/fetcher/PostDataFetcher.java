@@ -4,16 +4,27 @@ import com.github.zjiajun.spring.sandbox.graphql.dgs.service.PostService;
 import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Author;
 import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Comment;
 import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Post;
+import com.github.zjiajun.spring.sandbox.graphql.dgs.types.PostQuery;
 import com.netflix.graphql.dgs.*;
+import com.netflix.graphql.dgs.context.DgsContext;
+import com.netflix.graphql.dgs.internal.DgsWebMvcRequestData;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.servlet.http.Cookie;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author zhujiajun
  * @version 1.0
  * @since 2021/10/17 15:43
  */
+@Slf4j
 @DgsComponent
 public class PostDataFetcher {
 
@@ -25,9 +36,40 @@ public class PostDataFetcher {
         return postService.getPostById(postId);
     }
 
+    /**
+     * 在schema中, 输入参数通常被定义为可选的, 可以使用Optional包装, 避免null判断
+     * @param title title
+     * @return posts
+     */
     @DgsData(parentType = "Query", field = "getAllPosts")
-    public List<Post> getAllPosts(@InputArgument("title") String title) {
+    public List<Post> getAllPosts(@InputArgument("title") Optional<String> title) {
         return postService.getAllPosts(title);
+    }
+
+    /**
+     * 对于input参数是集合类型时,需要指定collectionType值
+     * @param postQueries post query list argument
+     * @return posts
+     */
+    @DgsQuery
+    public List<Post> getPostByListArg(@InputArgument(value = "postQueries", collectionType = PostQuery.class) List<PostQuery> postQueries) {
+        return postService.getPostByListArg(postQueries);
+    }
+
+    @DgsQuery
+    public String getHeaderAndCookie(@RequestHeader(value = "host") String host,
+                                     @RequestHeader(value = "user-Agent") String userAgent,
+                                     @CookieValue(value = "manual-cookie") String manualCookie,
+                                     DgsDataFetchingEnvironment dataFetchingEnvironment) {
+        String response = String.format("request header [host]: %s [user-Agent]: %s cookie [manual-cookie]: %s", host, userAgent, manualCookie);
+        log.info(response);
+        DgsContext dgsContext = dataFetchingEnvironment.getDgsContext();
+        DgsWebMvcRequestData requestData = ((DgsWebMvcRequestData) dgsContext.getRequestData());
+        ServletWebRequest webRequest = ((ServletWebRequest) requestData.getWebRequest());
+        webRequest.getResponse().addCookie(new Cookie("response-cookie", "response-cookie-value"));
+        Optional<HttpHeaders> optionalHttpHeaders = Optional.ofNullable(requestData.getHeaders());
+        optionalHttpHeaders.ifPresent(httpHeaders -> httpHeaders.forEach((k, v) -> log.info("header key: {}, value: {}", k, v)));
+        return response;
     }
 
     /**
@@ -41,6 +83,7 @@ public class PostDataFetcher {
     @DgsData(parentType = "Post", field = "comments")
     public List<Comment> getComment(DgsDataFetchingEnvironment dataFetchingEnvironment) {
         Post post = dataFetchingEnvironment.getSource();
+        log.info("根据 postId = [{}] 查询评论", post.getId());
         return postService.getCommentByPostId(post.getId());
     }
 
@@ -57,9 +100,11 @@ public class PostDataFetcher {
     public Author getAuthor(DgsDataFetchingEnvironment dataFetchingEnvironment) {
         Object source = dataFetchingEnvironment.getSource();
         if (source instanceof Post) {
+            log.info("根据 postId = [{}] 查询作者", ((Post) source).getId());
             return postService.getAuthorByPostId(((Post) source).getId());
         }
         if (source instanceof Comment) {
+            log.info("根据 commentId = [{}] 查询作者", ((Comment)source).getId());
             return postService.getAuthorByCommentId(((Comment) source).getId());
         }
         throw new IllegalArgumentException("fetch env context source must be Post or Comment");

@@ -4,5 +4,9 @@ type Query {
 
     getAllPosts(title: String): [Post!]!
 
+    getPostByListArg(postQueries: [PostQuery]!): [Post!]!
+
+    getHeaderAndCookie: String
+
 }
 
