@@ -1,0 +1,22 @@
+type Post {
+
+    id: String!
+    title: String
+    content: String
+    comments: [Comment]
+    author: Author
+}
+
+type Comment {
+
+    id: String!
+    postId: String!
+    content: String
+    author: Author
+}
+
+type Author {
+
+    id: String!
+    name: String!
+}

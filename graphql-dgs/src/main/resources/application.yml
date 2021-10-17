@@ -10,7 +10,3 @@ dgs:
     schema-locations:
       - classpath*:schema/**/*.graphql*
       - classpath*:schema/**/*.graphql*
-
-    extensions:
-      scalars:
-        enabled: true

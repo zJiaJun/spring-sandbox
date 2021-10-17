@@ -1,8 +1,8 @@
 type Query {
-    shows(titleFilter: String): [Show]
+
+    getPostById(postId: String!): Post
+
+    getAllPosts(title: String): [Post!]!
+
 }
 
-type Show {
-    title: String
-    releaseYear: Int
-}
