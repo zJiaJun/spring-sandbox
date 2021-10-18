@@ -1,5 +1,6 @@
 package com.github.zjiajun.spring.sandbox.graphql.dgs.fetcher;
 
+import com.github.zjiajun.spring.sandbox.graphql.dgs.context.CustomGraphqlContext;
 import com.github.zjiajun.spring.sandbox.graphql.dgs.service.PostService;
 import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Author;
 import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Comment;
@@ -64,6 +65,12 @@ public class PostDataFetcher {
         String response = String.format("request header [host]: %s [user-Agent]: %s cookie [manual-cookie]: %s", host, userAgent, manualCookie);
         log.info(response);
         DgsContext dgsContext = dataFetchingEnvironment.getDgsContext();
+        //获取自定义的上下文
+        CustomGraphqlContext graphqlContextFromStaticMethod = DgsContext.getCustomContext(dataFetchingEnvironment);
+        CustomGraphqlContext graphqlContextFromObjectMethod = (CustomGraphqlContext) dgsContext.getCustomContext();
+        log.info("Custom context: {}", graphqlContextFromStaticMethod);
+        log.info("DgsContext.getCustomContext == dgsContext.getCustomContext, result = [{}]", graphqlContextFromStaticMethod == graphqlContextFromObjectMethod);
+
         DgsWebMvcRequestData requestData = ((DgsWebMvcRequestData) dgsContext.getRequestData());
         ServletWebRequest webRequest = ((ServletWebRequest) requestData.getWebRequest());
         webRequest.getResponse().addCookie(new Cookie("response-cookie", "response-cookie-value"));
