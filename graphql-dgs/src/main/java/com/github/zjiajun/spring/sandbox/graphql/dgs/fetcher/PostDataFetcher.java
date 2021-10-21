@@ -116,4 +116,11 @@ public class PostDataFetcher {
         }
         throw new IllegalArgumentException("fetch env context source must be Post or Comment");
     }
+
+    @DgsData(parentType = "Mutation", field = "addPost")
+    public Post addPost(DgsDataFetchingEnvironment dataFetchingEnvironment) {
+        String title = dataFetchingEnvironment.getArgument("title");
+        String content = dataFetchingEnvironment.getArgument("content");
+        return postService.addPost(title, content);
+    }
 }

@@ -86,4 +86,18 @@ public class PostService {
     public Author getAuthorByCommentId(String commentId) {
         return commentAuthorMap.get(commentId);
     }
+
+    public Post addPost(String title, String content) {
+        Author author = Author.builder().id(UUID.randomUUID().toString()).name("system-add").build();
+        String postId = UUID.randomUUID().toString();
+        Post post = Post.builder()
+                .id(postId)
+                .title(title)
+                .content(content)
+                .author(author)
+                .build();
+        postAuthorMap.put(postId, author);
+        posts.add(post);
+        return post;
+    }
 }
