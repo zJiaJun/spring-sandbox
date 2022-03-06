@@ -1,9 +1,9 @@
-package com.github.zjiajun.spring.sandbox.graphql.dgs.service;
+package com.github.zjiajun.spring.sandbox.graphql.netflix.service;
 
-import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Author;
-import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Comment;
-import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Post;
-import com.github.zjiajun.spring.sandbox.graphql.dgs.types.PostQuery;
+import com.github.zjiajun.spring.sandbox.graphql.netflix.types.Author;
+import com.github.zjiajun.spring.sandbox.graphql.netflix.types.Comment;
+import com.github.zjiajun.spring.sandbox.graphql.netflix.types.Post;
+import com.github.zjiajun.spring.sandbox.graphql.netflix.types.PostQuery;
 import graphql.com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

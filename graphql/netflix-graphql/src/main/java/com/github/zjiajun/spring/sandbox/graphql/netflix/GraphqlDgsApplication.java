@@ -1,4 +1,4 @@
-package com.github.zjiajun.spring.sandbox.graphql.dgs;
+package com.github.zjiajun.spring.sandbox.graphql.netflix;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

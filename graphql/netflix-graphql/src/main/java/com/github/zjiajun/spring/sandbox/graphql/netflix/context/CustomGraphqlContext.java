@@ -1,4 +1,4 @@
-package com.github.zjiajun.spring.sandbox.graphql.dgs.context;
+package com.github.zjiajun.spring.sandbox.graphql.netflix.context;
 
 import lombok.ToString;
 

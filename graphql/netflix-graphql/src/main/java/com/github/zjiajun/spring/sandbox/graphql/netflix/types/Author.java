@@ -1,4 +1,4 @@
-package com.github.zjiajun.spring.sandbox.graphql.dgs.types;
+package com.github.zjiajun.spring.sandbox.graphql.netflix.types;
 
 import lombok.Builder;
 import lombok.Data;

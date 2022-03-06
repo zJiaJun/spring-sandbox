@@ -20,6 +20,8 @@
     <modules>
         <module>graphql-dgs</module>
         <module>company</module>
+        <module>graphql</module>
+        <module>netflix-graphql</module>
     </modules>
 
     <dependencies>

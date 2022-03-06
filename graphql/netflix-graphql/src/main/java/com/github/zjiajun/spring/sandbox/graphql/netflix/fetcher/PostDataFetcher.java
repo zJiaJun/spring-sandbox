@@ -1,11 +1,11 @@
-package com.github.zjiajun.spring.sandbox.graphql.dgs.fetcher;
+package com.github.zjiajun.spring.sandbox.graphql.netflix.fetcher;
 
-import com.github.zjiajun.spring.sandbox.graphql.dgs.context.CustomGraphqlContext;
-import com.github.zjiajun.spring.sandbox.graphql.dgs.service.PostService;
-import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Author;
-import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Comment;
-import com.github.zjiajun.spring.sandbox.graphql.dgs.types.Post;
-import com.github.zjiajun.spring.sandbox.graphql.dgs.types.PostQuery;
+import com.github.zjiajun.spring.sandbox.graphql.netflix.context.CustomGraphqlContext;
+import com.github.zjiajun.spring.sandbox.graphql.netflix.service.PostService;
+import com.github.zjiajun.spring.sandbox.graphql.netflix.types.Author;
+import com.github.zjiajun.spring.sandbox.graphql.netflix.types.Comment;
+import com.github.zjiajun.spring.sandbox.graphql.netflix.types.Post;
+import com.github.zjiajun.spring.sandbox.graphql.netflix.types.PostQuery;
 import com.netflix.graphql.dgs.*;
 import com.netflix.graphql.dgs.context.DgsContext;
 import com.netflix.graphql.dgs.internal.DgsWebMvcRequestData;
