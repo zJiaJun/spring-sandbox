@@ -1,8 +1,8 @@
 package com.github.zjiajun.spring.sandbox.company.example.web.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.github.zjiajun.spring.sandbox.company.example.web.model.ExampleDTO;
+import com.github.zjiajun.spring.sandbox.company.example.web.model.query.ExampleQueryDTO;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author zhujiajun
@@ -13,8 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/example")
 public class ExampleController {
 
-    @GetMapping("/health")
-    public String health() {
-        return "health";
+    @GetMapping("/get")
+    public String health(@RequestParam("param") String param) {
+        return "example get " + param;
+    }
+
+    @PostMapping("/post")
+    public ExampleDTO post(@RequestBody ExampleQueryDTO exampleQueryDTO) {
+        ExampleDTO exampleDTO = new ExampleDTO();
+        exampleDTO.setId(exampleQueryDTO.getId());
+        exampleDTO.setAge(30);
+        exampleDTO.setName(exampleQueryDTO.getName());
+        exampleDTO.setVip(true);
+        return exampleDTO;
     }
 }
